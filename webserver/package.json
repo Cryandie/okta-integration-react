@@ -1,7 +1,7 @@
 {
-  "name": "okta-auth-tutorial",
+  "name": "okta-auth",
   "version": "1.0.0",
-  "description": "Okta auth tutorial with Node.js and Typescript",
+  "description": "Okta auth with Node.js and Typescript",
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon src/index.ts",
@@ -10,23 +10,6 @@
     "test:int": "jest int",
     "test:coverage": "jest --coverage"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/leoroese/node-okta-auth-tutorial.git"
-  },
-  "keywords": [
-    "Typescript",
-    "Node",
-    "Okta",
-    "Authentication",
-    "Authorization"
-  ],
-  "author": "Leonardo Roese",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/leoroese/node-okta-auth-tutorial/issues"
-  },
-  "homepage": "https://github.com/leoroese/node-okta-auth-tutorial#readme",
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
@@ -46,9 +29,8 @@
     "eslint-plugin-promise": "^5.1.0",
     "jest": "^27.1.0",
     "nodemon": "^2.0.12",
-    "prettier": "^2.3.2",
     "ts-jest": "^27.0.5",
-    "ts-node": "^10.2.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.4.2"
   },
   "dependencies": {

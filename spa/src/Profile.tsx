@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useOktaAuth } from "@okta/okta-react";
 
-const Profile = () => {
+interface UserInfo {
+  [key: string]: any;
+}
+
+interface Message {
+  id: number;
+  date: string;
+  text: string;
+}
+
+const Profile: React.FC = () => {
   const { authState, oktaAuth } = useOktaAuth();
-  const [userInfo, setUserInfo] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     if (!authState || !authState.isAuthenticated) {
@@ -15,18 +25,20 @@ const Profile = () => {
         setUserInfo(info);
       });
     }
-  }, [authState, oktaAuth]); // Update if authState changes
+  }, [authState, oktaAuth, messages]); // Update if authState changes
 
   const callBackend = async () => {
+    //FIXME: Add try catch blocks
     const response = await fetch("http://localhost:8080/api/locked", {
       headers: {
-        Authorization: `Bearer ${authState.accessToken.accessToken}`,
+        Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
       },
     });
 
     if (!response.ok) {
       return Promise.reject();
     }
+
     const data = await response.json();
     setMessages(data.messages);
   };
@@ -47,13 +59,8 @@ const Profile = () => {
           the &nbsp;
           <a href="https://developer.okta.com/docs/guides/implement-auth-code-pkce">
             PKCE Flow
-          </a>{" "}
-          and is now stored in local storage.
-        </p>
-        <p>
-          This route is protected with the <code>&lt;SecureRoute&gt;</code>{" "}
-          component, which will ensure that this page cannot be accessed until
-          you have authenticated.
+          </a>
+          &nbsp; and is now stored in local storage.
         </p>
         <table>
           <thead>
@@ -63,9 +70,7 @@ const Profile = () => {
             </tr>
           </thead>
           <tbody>
-            {Object.entries(userInfo).map((claimEntry) => {
-              const claimName = claimEntry[0];
-              const claimValue = claimEntry[1];
+            {Object.entries(userInfo).map(([claimName, claimValue]) => {
               const claimId = `claim-${claimName}`;
               return (
                 <tr key={claimName}>
@@ -76,7 +81,7 @@ const Profile = () => {
             })}
           </tbody>
         </table>
-        {/* <button onClick={callBackend}>Call api</button>
+        <button onClick={callBackend}>Call api</button>
         <table>
           <thead>
             <tr>
@@ -85,14 +90,16 @@ const Profile = () => {
             </tr>
           </thead>
           <tbody>
-            {messages?.map((message, index) => (
-              <tr key={index} id={message.id}>
-                <td>{message.date}</td>
-                <td>{message.text}</td>
-              </tr>
-            ))}
+            {messages?.map((message, index) => {
+              return (
+                <tr key={index} id={index.toString()}>
+                  <td>{message.date}</td>
+                  <td>{message.text}</td>
+                </tr>
+              );
+            })}
           </tbody>
-        </table> */}
+        </table>
       </div>
     </div>
   );
